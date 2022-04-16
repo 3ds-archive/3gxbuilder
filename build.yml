@@ -1,0 +1,42 @@
+name: Online 3GX Builder
+
+on:
+  workflow_dispatch:
+    inputs:
+      link:
+        description: GitHub repository URL
+        required: true
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    
+    container:
+      image: pablomk7/libctrpf:0.7.2
+
+    steps:
+    - name: Get repo
+      id: repo
+      run: |
+        repo=$(echo ${{ github.event.inputs.link }} | sed -e "s/^https:\/\/github.com\///")
+        path=$(basename $repo)
+        echo "::set-output name=repo::$repo"
+        echo "::set-output name=path::$path"
+
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        repository: ${{ steps.repo.outputs.repo }}
+
+    - name: Build
+      id: build
+      run: |
+        make
+        mv $(find ./*3gx)  ${{ steps.repo.outputs.path }}.3gx
+
+    - name: Upload
+      uses: actions/upload-artifact@v2
+      with:
+        name: ${{ steps.repo.outputs.path }}
+        path: ${{ steps.repo.outputs.path }}.3gx
