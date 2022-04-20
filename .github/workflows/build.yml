@@ -14,13 +14,13 @@ jobs:
     - name: Get repo
       id: repo
       run: |
-        path=$(basename ${{ github.event.inputs.action }})
+        path=$(basename ${{ github.event.action }})
         echo "::set-output name=path::$path"
 
     - name: Checkout
       uses: actions/checkout@v2
       with:
-        repository: ${{ github.event.inputs.action }}
+        repository: ${{ github.event.action }}
 
     - name: Build
       id: build
