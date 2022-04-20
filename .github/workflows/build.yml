@@ -1,11 +1,6 @@
 name: Online 3GX Builder
 
-on:
-  workflow_dispatch:
-    inputs:
-      link:
-        description: GitHub repository URL
-        required: true
+on: repository_dispatch
 
 jobs:
   build:
