@@ -14,7 +14,7 @@ jobs:
     - name: Get repo
       id: repo
       run: |
-        repo=$(echo ${{ github.event.inputs.link }} | sed -e "s/^https:\/\/github.com\///")
+        repo=$(echo ${{ github.event.inputs.action }} | sed -e "s/^https:\/\/github.com\///")
         path=$(basename $repo)
         echo "::set-output name=repo::$repo"
         echo "::set-output name=path::$path"
